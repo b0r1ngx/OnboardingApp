@@ -3,6 +3,7 @@
 
     <string name="Start">Start</string>
     <string name="Check">Check</string>
+    <string name="Next">Next</string>
 
     <string name="wifi_title">WiFi Scanner</string>
     <string name="wifi_body">With this app, you can scan the network and

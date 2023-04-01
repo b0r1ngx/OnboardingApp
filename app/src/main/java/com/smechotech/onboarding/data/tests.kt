@@ -13,6 +13,16 @@ val testTest = Test(
                 Answer("Для чайников", false),
                 Answer("Для ноутбуков", true)
             )
+        ),
+        Question(
+            quest = "Для чего можно использовать ноутбуки?",
+            isFewAnswers = false,
+            answers = listOf(
+                Answer("В виде молотка", false),
+                Answer("Для работы", true),
+                Answer("Для отдыха", true),
+                Answer("Для детей до 3-х лет", false)
+            )
         )
     )
 )

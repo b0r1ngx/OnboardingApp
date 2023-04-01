@@ -14,10 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.smechotech.onboarding.ui.Navigation.*
-import com.smechotech.onboarding.ui.screens.LoginScreen
-import com.smechotech.onboarding.ui.screens.MainScreen
-import com.smechotech.onboarding.ui.screens.OnBoardingScreen
-import com.smechotech.onboarding.ui.screens.SettingsScreen
+import com.smechotech.onboarding.ui.screens.*
 import com.smechotech.onboarding.ui.theme.OnboardingAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -53,18 +50,31 @@ fun OnBoardingAppNavHost(
     navController: NavHostController,
     viewModel: UserViewModel
 ) = NavHost(
-    navController = navController, startDestination = OnBoardingScreen.name
+    navController = navController, startDestination = TestScreen.name
 ) {
     composable(OnBoardingScreen.name) {
         OnBoardingScreen(navController)
     }
 
     composable(LoginScreen.name) {
-        LoginScreen()
+        LoginScreen(navController)
     }
 
     composable(MainScreen.name) {
         MainScreen(navController, viewModel)
+    }
+
+    composable(TestScreen.name) {
+        TestScreen(navController, viewModel.test)
+    }
+
+    composable(TestQuestionScreen.name) {
+        TestQuestionScreen(
+            navController,
+            viewModel,
+            viewModel.test.title,
+            viewModel.test.questions[viewModel.currentQuestionIndex]
+        )
     }
 
 //    composable("${DeviceScreen.name}/{deviceMac}") {

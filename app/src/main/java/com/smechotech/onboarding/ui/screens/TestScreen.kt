@@ -14,31 +14,37 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices.PIXEL_4
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.smechotech.onboarding.R
 import com.smechotech.onboarding.data.Test
 import com.smechotech.onboarding.data.testTest
 import com.smechotech.onboarding.ui.Description
+import com.smechotech.onboarding.ui.Navigation
 import com.smechotech.onboarding.ui.Title
 
 @Composable
-fun TestScreen(test: Test) {
+fun TestScreen(navController: NavHostController, test: Test) {
     Column(
-        modifier = Modifier.fillMaxSize().padding(all = 15.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(all = 15.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Title(test.title)
         Image(test.image)
         Description(test.theory)
-        ButtonToTest()
+        ButtonToTest(navController)
     }
 }
 
 @Composable
 fun ButtonToTest(
+    navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
     Button(
-        onClick = { /*TODO*/ },
+        onClick = { navController.navigate(Navigation.TestQuestionScreen.name) },
         modifier = modifier
     ) {
         Text(text = stringResource(id = R.string.Start))
@@ -60,5 +66,5 @@ fun Image(imageResource: Int?) {
 )
 @Composable
 fun TestPreview() {
-    TestScreen(test = testTest)
+    TestScreen(test = testTest, navController = rememberNavController())
 }
