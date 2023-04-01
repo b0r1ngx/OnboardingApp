@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.smechotech.onboarding.ui.Navigation
+import com.smechotech.onboarding.userAuthorized
 
 @Composable
 fun LoginScreen(navController: NavHostController) {
@@ -46,7 +47,10 @@ fun LoginScreen(navController: NavHostController) {
             onValueChange = { newText -> password.value = newText }
         )
         
-        Button(onClick = { navController.navigate(Navigation.TestScreen.name) }) {
+        Button(onClick = {
+            userAuthorized()
+            navController.navigate(Navigation.TestScreen.name)
+        }) {
             Text(text = "Log in")
         }
     }
