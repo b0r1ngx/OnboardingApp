@@ -22,7 +22,7 @@ import com.smechotech.onboarding.ui.theme.OnboardingAppTheme
 
 class MainActivity : ComponentActivity() {
 
-    val viewModel: AppViewModel by viewModels()
+    private val viewModel: UserViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun App(
-    viewModel: AppViewModel
+    viewModel: UserViewModel
 ) {
     val navController = rememberNavController()
     OnBoardingAppNavHost(navController = navController, viewModel = viewModel)
@@ -51,7 +51,7 @@ fun App(
 @Composable
 fun OnBoardingAppNavHost(
     navController: NavHostController,
-    viewModel: AppViewModel
+    viewModel: UserViewModel
 ) = NavHost(
     navController = navController, startDestination = OnBoardingScreen.name
 ) {
