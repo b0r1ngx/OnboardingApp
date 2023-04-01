@@ -1,39 +1,49 @@
 package com.smechotech.onboarding
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.smechotech.onboarding.MainActivity.Companion.sharedPreferences
 import com.smechotech.onboarding.ui.Navigation.*
 import com.smechotech.onboarding.ui.screens.*
 import com.smechotech.onboarding.ui.theme.OnboardingAppTheme
 
 class MainActivity : ComponentActivity() {
-
     private val viewModel: UserViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        sharedPreferences = getPreferences(MODE_PRIVATE)
         setContent {
             OnboardingAppTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    App(viewModel = viewModel)
+                    Box {
+                        Image(
+                            painter = painterResource(id = R.drawable.background),
+                            contentDescription = null,
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.FillBounds
+                        )
+                        App(viewModel = viewModel)
+                    }
                 }
-            }
         }
+    }
+
+    companion object {
+        lateinit var sharedPreferences: SharedPreferences
     }
 }
 
@@ -50,7 +60,7 @@ fun OnBoardingAppNavHost(
     navController: NavHostController,
     viewModel: UserViewModel
 ) = NavHost(
-    navController = navController, startDestination = TestScreen.name
+    navController = navController, startDestination = MainScreen.name
 ) {
     composable(OnBoardingScreen.name) {
         OnBoardingScreen(navController)
@@ -62,6 +72,11 @@ fun OnBoardingAppNavHost(
 
     composable(MainScreen.name) {
         MainScreen(navController, viewModel)
+        if (firstTimeLaunch()) {
+            navController.navigate(OnBoardingScreen.name)
+        } else if (!isUserAuthorized()) {
+            navController.navigate(LoginScreen.name)
+        }
     }
 
     composable(TestScreen.name) {
@@ -84,5 +99,23 @@ fun OnBoardingAppNavHost(
     composable(SettingsScreen.name) {
         SettingsScreen(navController)
     }
+}
+
+const val FIRST_TIME_LAUNCH = "FIRST_TIME_LAUNCH"
+const val USER_AUTHORIZED = "USER_AUTHORIZED"
+
+fun firstTimeLaunch(): Boolean {
+    val firsTimeLaunch = sharedPreferences.getBoolean(FIRST_TIME_LAUNCH, true)
+    with(sharedPreferences.edit()) {
+        putBoolean(FIRST_TIME_LAUNCH, false)
+        apply()
+    }
+    return firsTimeLaunch
+}
+
+fun isUserAuthorized() = sharedPreferences.getBoolean(USER_AUTHORIZED, false)
+fun userAuthorized() = with(sharedPreferences.edit()) {
+    putBoolean(USER_AUTHORIZED, true)
+    apply()
 }
 
