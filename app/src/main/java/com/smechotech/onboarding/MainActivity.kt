@@ -3,16 +3,27 @@ package com.smechotech.onboarding
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.smechotech.onboarding.ui.Navigation.*
+import com.smechotech.onboarding.ui.screens.LoginScreen
+import com.smechotech.onboarding.ui.screens.MainScreen
+import com.smechotech.onboarding.ui.screens.OnBoardingScreen
+import com.smechotech.onboarding.ui.screens.SettingsScreen
 import com.smechotech.onboarding.ui.theme.OnboardingAppTheme
 
 class MainActivity : ComponentActivity() {
+
+    val viewModel: AppViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -22,7 +33,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    App(viewModel = viewModel)
                 }
             }
         }
@@ -30,14 +41,38 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
+fun App(
+    viewModel: AppViewModel
+) {
+    val navController = rememberNavController()
+    OnBoardingAppNavHost(navController = navController, viewModel = viewModel)
 }
 
-@Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
-    OnboardingAppTheme {
-        Greeting("Android")
+fun OnBoardingAppNavHost(
+    navController: NavHostController,
+    viewModel: AppViewModel
+) = NavHost(
+    navController = navController, startDestination = OnBoardingScreen.name
+) {
+    composable(OnBoardingScreen.name) {
+        OnBoardingScreen(navController)
+    }
+
+    composable(LoginScreen.name) {
+        LoginScreen()
+    }
+
+    composable(MainScreen.name) {
+        MainScreen(navController, viewModel)
+    }
+
+//    composable("${DeviceScreen.name}/{deviceMac}") {
+//        DeviceScreen(navController, viewModel, it.arguments?.getString("deviceMac"))
+//    }
+
+    composable(SettingsScreen.name) {
+        SettingsScreen(navController)
     }
 }
+

@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">Onboarding App</string>
+
+    <string name="wifi_title">WiFi Scanner</string>
+    <string name="wifi_body">With this app, you can scan the network and
+see what devices are connected to it, see their
+ping and mark them as confirmed.</string>
+    <string name="scnetwork_title">Scan Network</string>
+    <string name="scnetwork_body">Scan network to see all connections</string>
+    <string name="fdevices_title">Find Devices</string>
+    <string name="fdevices_body">Ready instructions to find spy devices</string>
+    <string name="ltupdates_title">Always get the latest updates.</string>
+    <string name="ltupdates_body">We well only send important notifications.
+        \nWithout any spam or annoying advertisement.</string>
+    <string name="ltupdates_btext">Allow Notifications</string>
+    <string name="ltupdates_subtext">You can turn notifications on and off at any time.</string>
+    <string name="start1">Start</string>
+    <string name="subtext1">Click the button to continue. You can start using the \napp immediately after viewing it.</string>
 </resources>
