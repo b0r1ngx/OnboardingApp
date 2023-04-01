@@ -1,5 +1,6 @@
 package com.smechotech.onboarding.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,12 +24,15 @@ import com.smechotech.onboarding.ui.Title
 @Composable
 fun TestQuestionScreen(
     navController: NavHostController,
-    viewModel: UserViewModel,
-    title: String,
-    question: Question,
+    viewModel: UserViewModel
 ) {
     val isAnswerCheck = remember { mutableStateOf(false) }
     val isNext = remember { mutableStateOf(false) }
+
+    val title by remember { mutableStateOf(viewModel.test.title) }
+    val question by remember {
+        mutableStateOf(viewModel.test.questions[viewModel.currentQuestionIndex])
+    }
 
     Column(
         modifier = Modifier
@@ -168,13 +172,18 @@ fun ButtonCheckTest(
         onClick = {
             if (isFewAnswer) {
                 isNext.value = !isNext.value
-
             } else {
                 with(viewModel) {
                     currentQuestionIndex++
-                    if (currentQuestionIndex == currentTestQuestionSize)
+                    Log.d("Test", currentQuestionIndex.toString())
+                    Log.d("Test", currentTestQuestionSize.toString())
+                    if (currentQuestionIndex == currentTestQuestionSize) {
+                        Log.d("Test", "if")
                         navController.navigate(Navigation.RewardingAfterTestScreen.name)
-                    else navController.navigate(Navigation.TestQuestionScreen.name)
+                    } else {
+                        Log.d("Test", "else")
+                        navController.navigate(Navigation.TestQuestionScreen.name)
+                    }
                 }
             }
         },

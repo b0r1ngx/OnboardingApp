@@ -29,16 +29,16 @@ class MainActivity : ComponentActivity() {
         sharedPreferences = getPreferences(MODE_PRIVATE)
         setContent {
             OnboardingAppTheme {
-                    Box {
-                        Image(
-                            painter = painterResource(id = R.drawable.background),
-                            contentDescription = null,
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.FillBounds
-                        )
-                        App(viewModel = viewModel)
-                    }
+                Box {
+                    Image(
+                        painter = painterResource(id = R.drawable.background),
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.FillBounds
+                    )
+                    App(viewModel = viewModel)
                 }
+            }
         }
     }
 
@@ -63,15 +63,19 @@ fun OnBoardingAppNavHost(
     navController = navController, startDestination = MainScreen.name
 ) {
     composable(OnBoardingScreen.name) {
-        OnBoardingScreen(navController)
+        OnBoardingScreen(navController = navController)
     }
 
     composable(LoginScreen.name) {
-        LoginScreen(navController)
+        LoginScreen(navController = navController)
     }
 
     composable(MainScreen.name) {
-        MainScreen(navController, viewModel)
+        MainScreen(
+            navController = navController,
+            viewModel = viewModel
+        )
+
         if (firstTimeLaunch()) {
             navController.navigate(OnBoardingScreen.name)
         } else if (!isUserAuthorized()) {
@@ -80,15 +84,16 @@ fun OnBoardingAppNavHost(
     }
 
     composable(TestScreen.name) {
-        TestScreen(navController, viewModel.test)
+        TestScreen(
+            navController = navController,
+            test = viewModel.test
+        )
     }
 
     composable(TestQuestionScreen.name) {
         TestQuestionScreen(
-            navController,
-            viewModel,
-            viewModel.test.title,
-            viewModel.test.questions[viewModel.currentQuestionIndex]
+            navController = navController,
+            viewModel = viewModel
         )
     }
 
@@ -97,15 +102,14 @@ fun OnBoardingAppNavHost(
     }
 
     composable(ShopScreen.name) {
-        ShopScreen(navController = navController, viewModel)
+        ShopScreen(
+            navController = navController,
+            viewModel = viewModel
+        )
     }
 
-//    composable("${DeviceScreen.name}/{deviceMac}") {
-//        DeviceScreen(navController, viewModel, it.arguments?.getString("deviceMac"))
-//    }
-
     composable(SettingsScreen.name) {
-        SettingsScreen(navController)
+        SettingsScreen(navController = navController)
     }
 }
 
