@@ -92,6 +92,14 @@ fun OnBoardingAppNavHost(
         )
     }
 
+    composable(RewardingAfterTestScreen.name) {
+        RewardingAfterTestScreen(navController = navController)
+    }
+
+    composable(ShopScreen.name) {
+        ShopScreen(navController = navController, viewModel)
+    }
+
 //    composable("${DeviceScreen.name}/{deviceMac}") {
 //        DeviceScreen(navController, viewModel, it.arguments?.getString("deviceMac"))
 //    }
