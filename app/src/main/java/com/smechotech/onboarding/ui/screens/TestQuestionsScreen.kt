@@ -43,7 +43,6 @@ fun QuestionsList(
     if (question.isFewAnswers) FewAnswers(question) else NotFewAnswers(question)
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FewAnswers(
     question: Question
