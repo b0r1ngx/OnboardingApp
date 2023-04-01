@@ -1,12 +1,9 @@
 package com.smechotech.onboarding.ui.screens
 
-import android.Manifest
-import android.app.Activity
-import android.os.Build
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -16,103 +13,59 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Devices.PIXEL_4
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
-import kotlinx.coroutines.launch
 import com.smechotech.onboarding.R
+import com.smechotech.onboarding.ui.Navigation
+import kotlinx.coroutines.launch
 
 typealias NavigateNextPage = () -> Unit
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun OnBoardingScreen(navController: NavHostController) {
-    val fPagerState = rememberPagerState()
-
     val coroutineScope = rememberCoroutineScope()
-
-    val context = LocalContext.current
-    val skipNotificationScreen = if (context is Activity) {
-        if (Build.VERSION.SDK_INT >= 33) {
-            !shouldShowRequestPermissionRationale(context, Manifest.permission.POST_NOTIFICATIONS)
-        } else {
-            true
-        }
-    } else {
-        true
-    }
+    val pagerState = rememberPagerState()
 
     val navigateNext: NavigateNextPage = {
-        // Skip notifications screen
-        if (fPagerState.currentPage == 3 && skipNotificationScreen) {
-            coroutineScope.launch {
-                navController.navigateUp()
-            }
-        } else if (fPagerState.pageCount - 1 > fPagerState.currentPage) {
-            coroutineScope.launch {
-                fPagerState.animateScrollToPage(fPagerState.currentPage + 1)
-            }
-        } else {
-            navController.navigateUp()
+        if (pagerState.pageCount - 1 > pagerState.currentPage) coroutineScope.launch {
+            pagerState.scrollToPage(pagerState.currentPage + 1)
         }
+        else navController.navigate(Navigation.LoginScreen.name)
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Button(
-            modifier = Modifier
-                .padding(16.dp)
-                .width(29.dp)
-                .height(29.dp)
-                .align(Alignment.End),
-            shape = CircleShape,
-            colors = ButtonDefaults.buttonColors(
-                contentColorFor(backgroundColor =  Color(0x1AFFFFFF))
-            ),
-            contentPadding = PaddingValues(0.dp),
-            onClick = {
-                navController.navigateUp()
-            }) {
-            Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.ic_launcher_foreground),
-                contentDescription = "",
-                tint = Color(0xFF75727B)
-            )
-        }
-
+    Box {
         HorizontalPager(
-            modifier = Modifier
-                .fillMaxSize(),
-            count = 5,
+            modifier = Modifier.fillMaxSize(),
+            count = 3,
             userScrollEnabled = false,
-            state = fPagerState
+            state = pagerState
         ) { page ->
+            val padding = when (page) {
+                0 -> 2400.dp
+                1 -> 2250.dp
+                2 -> 2000.dp
+                else -> 1600.dp
+            }
+
             when (page) {
-                0 -> {
-                    WifiScreen(navigateNext)
-                }
-                1 -> {
-                    ScanNetworkScreen(navigateNext)
-                }
-                2 -> {
-                    FindDevicesScreen(navigateNext)
-                }
-                3 -> {
-                    LastUpdates(navigateNext)
-                }
+                0 -> Welcome(navigateNext, padding)
+                1 -> WelcomeToTeam(navigateNext, padding)
+                2 -> Study(navigateNext, padding)
             }
         }
     }
@@ -120,71 +73,57 @@ fun OnBoardingScreen(navController: NavHostController) {
 
 @Composable
 private fun IconContentScreen(
-    @DrawableRes icon: Int,
     @StringRes title: Int,
     @StringRes body: Int,
+    padding: Dp,
+    @DrawableRes icon: Int = R.drawable.nyan_cat_white_full
 ) {
-    Column(Modifier.fillMaxSize()) {
-        Icon(
+    Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+        Image(
+            painter = painterResource(id = icon),
+            contentDescription = "",
+            modifier = Modifier
+                .padding(top = 40.dp)
+                .wrapContentSize(unbounded = true)
+                .padding(end = padding), // 2400 start, 1600 out,
+            contentScale = ContentScale.FillWidth
+        )
+        Text(
+            text = stringResource(id = title),
+            fontWeight = FontWeight.Bold,
+            style = TextStyle(
+                fontSize = 28.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = Color.White,
+                textAlign = TextAlign.Center
+            )
+        )
+        Text(
+            text = stringResource(id = body),
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .padding(top = 50.dp)
-                .width(130.dp)
-                .height(130.dp),
-            painter = painterResource(id = icon),
-            contentDescription = ""
-        )
-        Text(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            text = stringResource(id = title),
-            fontWeight = FontWeight.Bold,
-            style = MaterialTheme.typography.headlineMedium
-        )
-        Text(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
+                .padding(top = 110.dp),
             textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.bodySmall,
-            color = Color.Gray,
-            text = stringResource(id = body)
+            style = TextStyle(
+                fontSize = 20.sp,
+                color = Color.White
+            ),
+            color = Color.White,
         )
     }
 }
 
 @Composable
-private fun BaseContentScreen(@StringRes title: Int, @StringRes body: Int) {
-    Column(
-        Modifier
-            .fillMaxSize()
-            .padding(top = 50.dp)
-    ) {
-        Text(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            text = stringResource(id = title),
-            textAlign = TextAlign.Center,
-            fontWeight = FontWeight.Bold,
-            style = MaterialTheme.typography.headlineMedium
-        )
-        Text(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.bodySmall,
-            color = Color.Gray,
-            text = stringResource(id = body)
-        )
-    }
-}
-
-@Composable
-private fun BaseOnboardingScreen(
+private fun BaseOnBoardingScreen(
     navigateNext: NavigateNextPage,
     @DrawableRes icon: Int = R.drawable.ic_launcher_foreground,
-    @StringRes btext: Int = R.string.start1,
-    @StringRes bsubtext: Int = R.string.subtext1,
+    @StringRes buttonText: Int = R.string.next,
+    @StringRes descriptionText: Int = R.string.next_description,
     content: @Composable () -> Unit
 ) {
     Box(
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
     ) {
         Column(modifier = Modifier.matchParentSize()) {
             content.invoke()
@@ -192,89 +131,86 @@ private fun BaseOnboardingScreen(
 
         Column(
             modifier = Modifier
-                .align(Alignment.BottomCenter)
+                .align(Alignment.BottomCenter),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Divider(
-                modifier = Modifier.padding(bottom = 15.dp),
-                thickness = 1.dp
-            )
-
             Button(
                 onClick = {
                     navigateNext.invoke()
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(56.dp)
-                    .padding(start = 20.dp, end = 20.dp)
-                    .align(Alignment.CenterHorizontally),
-                shape = RoundedCornerShape(corner = CornerSize(16.dp)),
-                colors = ButtonDefaults.buttonColors()
+                    .height(46.dp)
+                    .padding(horizontal = 70.dp),
+                shape = RoundedCornerShape(corner = CornerSize(23.dp)),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.White)
             ) {
-                Icon(
-                    imageVector = ImageVector.vectorResource(icon),
-                    contentDescription = "",
-                    tint = Color.White,
-                    modifier = Modifier
-                        .width(24.dp)
-                        .height(24.dp)
-                        .padding(end = 4.dp)
-                )
                 Text(
-                    stringResource(id = btext),
-                    fontWeight = FontWeight.Bold
+                    stringResource(id = buttonText),
+                    style = TextStyle(
+                        fontSize = 18.sp,
+                        color = Color.Black
+                    )
                 )
             }
 
             Text(
                 modifier = Modifier
-                    .padding(top = 10.dp, bottom = 30.dp)
-                    .align(Alignment.CenterHorizontally),
-                style = MaterialTheme.typography.bodyMedium,
+                    .padding(top = 10.dp, bottom = 30.dp),
+                style = TextStyle(
+                    textAlign = TextAlign.Center
+                ),
                 color = Color.Gray,
-                text = stringResource(id = bsubtext)
+                text = stringResource(id = descriptionText)
             )
         }
     }
 }
 
 @Composable
-private fun WifiScreen(navigateNext: NavigateNextPage) {
-    BaseOnboardingScreen(navigateNext = navigateNext) {
-        IconContentScreen(R.drawable.ic_launcher_foreground, R.string.wifi_title, R.string.wifi_body)
-    }
-}
-
-@Composable
-private fun ScanNetworkScreen(navigateNext: NavigateNextPage) {
-    BaseOnboardingScreen(navigateNext = navigateNext) {
+private fun Welcome(
+    navigateNext: NavigateNextPage,
+    padding: Dp
+) {
+    BaseOnBoardingScreen(navigateNext = navigateNext) {
         IconContentScreen(
-            R.drawable.ic_launcher_foreground,
-            R.string.scnetwork_title,
-            R.string.scnetwork_body
+            R.string.welcome,
+            R.string.welcome_content,
+            padding
         )
     }
 }
 
 @Composable
-private fun FindDevicesScreen(navigateNext: NavigateNextPage) {
-    BaseOnboardingScreen(navigateNext = navigateNext) {
+private fun WelcomeToTeam(
+    navigateNext: NavigateNextPage,
+    padding: Dp
+) {
+    BaseOnBoardingScreen(navigateNext = navigateNext) {
         IconContentScreen(
-            R.drawable.ic_launcher_foreground,
-            R.string.fdevices_title,
-            R.string.fdevices_body
+            R.string.welcome_to_team,
+            R.string.welcome_to_team_content,
+            padding
         )
     }
 }
 
 @Composable
-private fun LastUpdates(navigateNext: NavigateNextPage) {
-    BaseOnboardingScreen(
-        navigateNext = navigateNext,
-        icon = R.drawable.ic_launcher_foreground,
-        btext = R.string.ltupdates_btext,
-        bsubtext = R.string.ltupdates_subtext
-    ) {
-        BaseContentScreen(R.string.ltupdates_title, R.string.ltupdates_body)
+private fun Study(
+    navigateNext: NavigateNextPage,
+    padding: Dp
+) {
+    BaseOnBoardingScreen(navigateNext = navigateNext) {
+        IconContentScreen(
+            R.string.study,
+            R.string.study_content,
+            padding
+        )
     }
+}
+
+@Preview(device = PIXEL_4)
+@Composable
+fun OnBoardingScreenPreview() {
+    OnBoardingScreen(navController = rememberNavController())
 }
