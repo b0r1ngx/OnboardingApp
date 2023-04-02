@@ -95,7 +95,7 @@ fun OnBoardingAppNavHost(
     topBarState: MutableState<Boolean>,
     bottomBarState: MutableState<Boolean>
 ) = NavHost(
-    navController = navController, startDestination = TestScreen.name
+    navController = navController, startDestination = ProfileScreen.name
 ) {
     composable(OnBoardingScreen.name) {
         topBarState.value = false
@@ -132,7 +132,7 @@ fun OnBoardingAppNavHost(
         topBarState.value = false
         bottomBarState.value = true
 
-        ProfileScreen(navController)
+        ProfileScreen(navController, viewModel)
     }
 
     composable(CalendarScreen.name) {

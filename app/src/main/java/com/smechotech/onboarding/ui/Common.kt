@@ -2,8 +2,10 @@ package com.smechotech.onboarding.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
@@ -98,4 +100,23 @@ fun ImageButton(
             contentDescription = contentDescription,
             modifier = Modifier.clickable { onClick() }
         )
+}
+
+@Composable
+fun IconText(
+    iconId: Int,
+    text: String,
+    modifier: Modifier = Modifier
+) {
+    Row(modifier = modifier) {
+        ImageDesign(
+            imageResource = iconId,
+            modifier = Modifier.size(30.dp)
+        )
+        Text(
+            text = text,
+            style = TextStyle(fontSize = 30.sp),
+            color = Color.White
+        )
+    }
 }
