@@ -26,3 +26,5 @@ val testTest = Test(
         )
     )
 )
+
+val tests = listOf(testTest)
