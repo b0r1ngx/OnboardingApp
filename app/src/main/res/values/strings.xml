@@ -1,9 +1,7 @@
 <resources>
     <string name="app_name">Onboarding App</string>
 
-    <string name="Start">Start</string>
-    <string name="Check">Check</string>
-    <string name="Next">Next</string>
+    <string name="next">Далее</string>
 
     <string name="welcome">Добро\nпожаловать!</string>
     <string name="welcome_content">что-то о приложении</string>
@@ -11,6 +9,12 @@
     <string name="welcome_to_team_content">что-то о команде</string>
     <string name="study">Начнем же учиться!</string>
     <string name="study_content">что-то об обучении</string>
-    <string name="next">Далее</string>
     <string name="next_description">Жмите далее,\nскоро начнем использовать приложение по полной!:)</string>
+
+    <string name="start_test">Начать тест</string>
+    <string name="check_test">Проверить тест</string>
+    <string name="rewards_test_title">За этот тест вы получили:</string>
+
+
+
 </resources>

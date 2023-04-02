@@ -44,7 +44,7 @@ fun LoginScreen(navController: NavHostController) {
     ) {
 
         ImageButton(
-            imageResource = R.drawable.avatar_great, // TODO: temp avatar's id
+            imageResource = R.drawable.avatar_great,
             onClick = { /* TODO: select avatar */ }
         )
 
