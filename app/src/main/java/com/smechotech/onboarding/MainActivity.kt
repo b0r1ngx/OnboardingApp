@@ -95,7 +95,7 @@ fun OnBoardingAppNavHost(
     topBarState: MutableState<Boolean>,
     bottomBarState: MutableState<Boolean>
 ) = NavHost(
-    navController = navController, startDestination = MainScreen.name
+    navController = navController, startDestination = TestScreen.name
 ) {
     composable(OnBoardingScreen.name) {
         topBarState.value = false
