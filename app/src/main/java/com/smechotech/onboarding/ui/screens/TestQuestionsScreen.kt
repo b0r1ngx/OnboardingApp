@@ -1,24 +1,30 @@
 package com.smechotech.onboarding.ui.screens
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.*
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Devices.PIXEL_4
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.smechotech.onboarding.R
 import com.smechotech.onboarding.UserViewModel
 import com.smechotech.onboarding.data.Answer
 import com.smechotech.onboarding.data.Question
 import com.smechotech.onboarding.ui.Description
 import com.smechotech.onboarding.ui.Navigation
+import com.smechotech.onboarding.ui.TextButtonDesign
 import com.smechotech.onboarding.ui.Title
 
 @Composable
@@ -37,16 +43,23 @@ fun TestQuestionScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(all = 15.dp),
+            .padding(all = 22.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Title(title)
-        Description(question.quest)
+        Title(
+            titleText = title,
+            modifier = Modifier.weight(0.6f)
+        )
+        Description(
+            descriptionText = question.quest,
+            modifier = Modifier.weight(0.9f)
+        )
         QuestionsList(
-            question,
+            question = question,
             isAnswerCheck = isAnswerCheck,
             isNext = isNext,
-            viewModel = viewModel
+            viewModel = viewModel,
+            modifier = Modifier.weight(1f)
         )
         ButtonCheckTest(
             isNext = isNext,
@@ -54,7 +67,8 @@ fun TestQuestionScreen(
             isFewAnswer = question.isFewAnswers,
             navController = navController,
             viewModel = viewModel,
-            modifier = Modifier.padding(all = 10.dp)
+            modifier = Modifier
+                .padding(all = 10.dp)
         )
     }
 }
@@ -67,15 +81,16 @@ fun QuestionsList(
     viewModel: UserViewModel,
     modifier: Modifier = Modifier
 ) {
-    if (question.isFewAnswers) FewAnswers(question, isAnswerCheck, isNext)
-    else NotFewAnswers(question, isAnswerCheck, viewModel)
+    if (question.isFewAnswers) FewAnswers(question, isAnswerCheck, isNext, modifier)
+    else NotFewAnswers(question, isAnswerCheck, viewModel, modifier)
 }
 
 @Composable
 fun FewAnswers(
     question: Question,
     isNext: MutableState<Boolean>,
-    isAnswerCheck: MutableState<Boolean>
+    isAnswerCheck: MutableState<Boolean>,
+    modifier: Modifier = Modifier
 ) {
     Column(horizontalAlignment = Alignment.Start) {
         val mutableStateCheckForEachCheckbox =
@@ -129,8 +144,10 @@ fun NotFewAnswers(
     viewModel: UserViewModel,
     modifier: Modifier = Modifier
 ) {
-    for (answer in question.answers) {
-        AnswerButton(answer, isAnswerCheck, viewModel)
+    Column(modifier = modifier) {
+        for (answer in question.answers) {
+            AnswerButton(answer, isAnswerCheck, viewModel)
+        }
     }
 }
 
@@ -141,17 +158,23 @@ fun AnswerButton(
     viewModel: UserViewModel,
     modifier: Modifier = Modifier
 ) {
-    var color by remember { mutableStateOf(Color.Blue) }
+    var color by remember { mutableStateOf(Color(0xD6FFFFFF)) }
 
-    Button(
+    TextButtonDesign(
         onClick = {
             isAnswerCheck.value = true
             if (answer.isCorrect) {
-                color = Color.Green
+                color = Color(66, 238, 38)
                 viewModel.currentCorrectAnswers++
-            } else color = Color.Red
+            } else color = Color(229, 29, 2)
         },
-        colors = ButtonDefaults.buttonColors(disabledContainerColor = color),
+        modifier = modifier,
+        colors = ButtonDefaults.buttonColors(
+            contentColor = Color.Black,
+            containerColor = Color(0xD6FFFFFF),
+            disabledContentColor = Color.Black,
+            disabledContainerColor = color
+        ),
         enabled = !isAnswerCheck.value
     ) {
         Text(text = answer.text)
@@ -167,21 +190,16 @@ fun ButtonCheckTest(
     viewModel: UserViewModel,
     modifier: Modifier = Modifier
 ) {
-
-    Button(
+    TextButtonDesign(
         onClick = {
             if (isFewAnswer) {
                 isNext.value = !isNext.value
             } else {
                 with(viewModel) {
                     currentQuestionIndex++
-                    Log.d("Test", currentQuestionIndex.toString())
-                    Log.d("Test", currentTestQuestionSize.toString())
                     if (currentQuestionIndex == currentTestQuestionSize) {
-                        Log.d("Test", "if")
                         navController.navigate(Navigation.RewardingAfterTestScreen.name)
                     } else {
-                        Log.d("Test", "else")
                         navController.navigate(Navigation.TestQuestionScreen.name)
                     }
                 }
@@ -197,17 +215,14 @@ fun ButtonCheckTest(
     }
 }
 
-//@Preview(
-//    showBackground = true,
-//    device = PIXEL_4
-//)
-//@Composable
-//fun TestQuestionsPreview() {
-//    TestQuestionScreen(
-//        navController = rememberNavController(),
-//        viewModel = UserViewModel(),
-//        testTest.title,
-//        testTest.questions[0],
-//        correctAnswersCount = MutableState
-//    )
-//}
+@Preview(
+    showBackground = true,
+    device = PIXEL_4
+)
+@Composable
+fun TestQuestionsPreview() {
+    TestQuestionScreen(
+        navController = rememberNavController(),
+        viewModel = UserViewModel()
+    )
+}

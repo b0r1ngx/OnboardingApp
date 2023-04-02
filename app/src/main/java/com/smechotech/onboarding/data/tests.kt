@@ -1,8 +1,38 @@
 package com.smechotech.onboarding.data
 
+import com.smechotech.onboarding.R
+
+val testStartExample = Test(
+    title = "Первое знакомство",
+    theory = "Давайте познакомимся с тем, как выглядит тест! " +
+            "Не переживайте, тесты не будут душными =) " +
+            "Нажимайте на кнопки, все дальнейшие ответы будут правильными.\n",
+    questions = listOf(
+        Question(
+            quest = "Как у вас настроение?",
+            isFewAnswers = false,
+            answers = listOf(
+                Answer("Отлично", true),
+                Answer("Хорошо", true),
+                Answer("Средне", true),
+                Answer("Ну, сойдёт", true)
+            )
+        ),
+        Question(
+            quest = "Вы готовы начать учиться?",
+            isFewAnswers = false,
+            answers = listOf(
+                Answer("Да!", true),
+                Answer("Ещё нет, но скоро точно!", true)
+            )
+        )
+    )
+)
+
 val testTest = Test(
     title = "Аккуратнее с розетками",
-    theory = "В нашем офисе розетки расположены в большом количестве вокруг всех столов. " +
+    image = R.drawable.test_example,
+    theory = "\tВ нашем офисе розетки расположены в большом количестве вокруг всех столов. " +
             "Но при этом не стоит включать туда 4 чайника или других высоковольтных приборов. " +
             "Используйте розетки только для подключения ваших ноутбуков.",
     questions = listOf(

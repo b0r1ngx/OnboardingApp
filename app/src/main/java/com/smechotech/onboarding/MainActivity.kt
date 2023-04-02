@@ -60,7 +60,7 @@ fun OnBoardingAppNavHost(
     navController: NavHostController,
     viewModel: UserViewModel
 ) = NavHost(
-    navController = navController, startDestination = MainScreen.name
+    navController = navController, startDestination = TestScreen.name
 ) {
     composable(OnBoardingScreen.name) {
         OnBoardingScreen(navController = navController)
