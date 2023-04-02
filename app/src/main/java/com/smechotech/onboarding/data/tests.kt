@@ -2,7 +2,7 @@ package com.smechotech.onboarding.data
 
 import com.smechotech.onboarding.R
 
-val testStartExample = Test(
+val exampleStartTest = Test(
     title = "Первое знакомство",
     theory = "Давайте познакомимся с тем, как выглядит тест! " +
             "Не переживайте, тесты не будут душными =) " +
@@ -29,7 +29,7 @@ val testStartExample = Test(
     )
 )
 
-val testTest = Test(
+val funTest = Test(
     title = "Аккуратнее с розетками",
     image = R.drawable.test_example,
     theory = "\tВ нашем офисе розетки расположены в большом количестве вокруг всех столов. " +
@@ -57,4 +57,59 @@ val testTest = Test(
     )
 )
 
-val tests = listOf(testTest)
+val safetyPrecautionsTest = Test(
+    title = "Техника безопасности в офисе",
+    theory = "Если вы обнаружили подозрительный пакет в офисе, сообщите об этом своему начальнику. " +
+            "Длина пароля для безопасного входа в компьютер должна быть 12 символов." +
+            "Не следует размещать на бумаге имена и фамилии сотрудников, пароли и логины, Коды доступа и пин-коды." +
+            "Cледует менять пароль раз в месяц",
+    questions = listOf(
+        Question(
+            quest = "Что следует делать, если вы обнаружили подозрительный пакет в офисе?",
+            answers = listOf(
+                Answer("Открыть его и проверить содержимое", false),
+                Answer("Сообщить об этом своему начальнику", true),
+                Answer("Отнести пакет к двери и выбросить его в мусорный контейнер", false),
+                Answer("Поставить пакет на стол и подождать, что кто-то заберет его", false),
+            )
+        ),
+        Question(
+            quest = "Какой должна быть длина пароля для безопасного входа в компьютер?",
+            answers = listOf(
+                Answer("4 символа", false),
+                Answer("8 символов", false),
+                Answer("12 символов", true),
+                Answer("16 символов", false)
+            )
+        ),
+        Question(
+            quest = "Какую информацию не следует размещать на бумаге и оставлять на рабочем столе?",
+            answers = listOf(
+                Answer("Имена и фамилии сотрудников", false),
+                Answer("Пароли и логины", false),
+                Answer("Коды доступа и пин-коды", false),
+                Answer("Все перечисленное", true)
+            )
+        ),
+        Question(
+            quest = "Как следует поступать, если вы нашли USB-флешку на рабочем месте?",
+            answers = listOf(
+                Answer("Подключить ее к компьютеру и проверить содержимое", false),
+                Answer("Попросить начальника проверить содержимое", false),
+                Answer("Немедленно вернуть ее владельцу", true),
+                Answer("Отнести ее к двери и выбросить в мусорный контейнер", false)
+            )
+        ),
+        Question(
+            quest = "Как часто следует менять пароль для безопасности учетной записи электронной почты?",
+            answers = listOf(
+                Answer("Раз в год", false),
+                Answer("Раз в 3 года", false),
+                Answer("Раз в месяц", true),
+                Answer("Раз в неделю", false)
+            )
+        )
+    )
+)
+
+val tests = listOf(exampleStartTest, funTest, safetyPrecautionsTest)

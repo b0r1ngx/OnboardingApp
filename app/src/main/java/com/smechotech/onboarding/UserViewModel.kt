@@ -10,6 +10,8 @@ class UserViewModel: ViewModel() {
      * Constants
      */
     val ONE_LESSON_EXP: Int = 20
+    val ONE_LESSON_DIAMOND: Int = 5
+
 
     /**
      * User Data
@@ -26,6 +28,10 @@ class UserViewModel: ViewModel() {
     var currentTestQuestionSize: Int = test.questions.size
     var currentQuestionIndex: Int = 0
     var currentCorrectAnswers: Int = 0
+
+
+    fun getCurrentExp() = currentCorrectAnswers * ONE_LESSON_EXP
+    fun getCurrentDiamonds() = currentCorrectAnswers * ONE_LESSON_DIAMOND
 
     //var experienceForTest: Int = 0
 

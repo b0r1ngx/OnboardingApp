@@ -132,7 +132,8 @@ fun OnBoardingAppNavHost(
     }
 
     composable(RewardingAfterTestScreen.name) {
-        RewardingAfterTestScreen(navController = navController)
+        RewardingAfterTestScreen(navController = navController,
+            viewModel = viewModel)
     }
 
     composable(ShopScreen.name) {
