@@ -26,6 +26,7 @@ import com.smechotech.onboarding.ui.Description
 import com.smechotech.onboarding.ui.Navigation
 import com.smechotech.onboarding.ui.TextButtonDesign
 import com.smechotech.onboarding.ui.Title
+import com.smechotech.onboarding.ui.theme.screensHorizontalPadding
 
 @Composable
 fun TestQuestionScreen(
@@ -43,7 +44,7 @@ fun TestQuestionScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(all = 22.dp),
+            .padding(all = screensHorizontalPadding),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Title(

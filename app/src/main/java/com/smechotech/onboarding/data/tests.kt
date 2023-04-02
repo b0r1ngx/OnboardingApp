@@ -112,4 +112,4 @@ val safetyPrecautionsTest = Test(
     )
 )
 
-val tests = listOf(exampleStartTest, funTest, safetyPrecautionsTest)
+val tests = listOf(funTest, safetyPrecautionsTest)

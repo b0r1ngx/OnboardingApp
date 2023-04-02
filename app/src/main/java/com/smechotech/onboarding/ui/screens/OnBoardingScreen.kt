@@ -31,6 +31,8 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.smechotech.onboarding.R
 import com.smechotech.onboarding.ui.Navigation
+import com.smechotech.onboarding.ui.features.userPassOnBoarding
+import com.smechotech.onboarding.ui.theme.screensHorizontalPadding
 import kotlinx.coroutines.launch
 
 typealias NavigateNextPage = () -> Unit
@@ -45,7 +47,11 @@ fun OnBoardingScreen(navController: NavHostController) {
         if (pagerState.pageCount - 1 > pagerState.currentPage) coroutineScope.launch {
             pagerState.scrollToPage(pagerState.currentPage + 1)
         }
-        else navController.navigate(Navigation.LoginScreen.name)
+        else {
+            userPassOnBoarding()
+            navController.navigate(Navigation.LoginScreen.name)
+        }
+
     }
 
     Box {
@@ -122,7 +128,7 @@ private fun BaseOnBoardingScreen(
     content: @Composable () -> Unit
 ) {
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().padding(horizontal = screensHorizontalPadding),
         contentAlignment = Alignment.Center
     ) {
         Column(modifier = Modifier.matchParentSize()) {

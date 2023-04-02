@@ -4,12 +4,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -45,9 +47,11 @@ fun LoginScreen(navController: NavHostController) {
 
         ImageButton(
             imageResource = R.drawable.avatar_great,
-            onClick = { /* TODO: select avatar */ }
+            onClick = { /* TODO: select avatar */ },
+            modifier = Modifier.clip(CircleShape)
         )
 
+        Text(text = "Имя")
         TextField(
             value = login,
             onValueChange = { newText -> login = newText },
@@ -55,6 +59,7 @@ fun LoginScreen(navController: NavHostController) {
             textStyle = TextStyle(fontSize = 25.sp)
         )
 
+        Text(text = "Должность")
         TextField(
             value = password,
             onValueChange = { newText -> password = newText },

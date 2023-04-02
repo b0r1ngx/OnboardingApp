@@ -96,6 +96,6 @@ fun ImageButton(
         Image(
             painter = painterResource(imageResource),
             contentDescription = contentDescription,
-            modifier = Modifier.clickable { onClick() }
+            modifier = modifier.clickable { onClick() }
         )
 }

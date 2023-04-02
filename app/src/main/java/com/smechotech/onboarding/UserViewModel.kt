@@ -5,13 +5,11 @@ import com.smechotech.onboarding.data.Test
 import com.smechotech.onboarding.data.exampleStartTest
 
 class UserViewModel: ViewModel() {
-
     /**
      * Constants
      */
     val ONE_LESSON_EXP: Int = 20
     val ONE_LESSON_DIAMOND: Int = 5
-
 
     /**
      * User Data
@@ -20,6 +18,7 @@ class UserViewModel: ViewModel() {
     var userPassword: String = ""
     var userExperience: Int = 0
     var userDiamonds: Int = 0
+    var userAvatarId: Int? = null
 
     /**
     * Current Test

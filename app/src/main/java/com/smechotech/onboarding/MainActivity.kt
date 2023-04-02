@@ -25,17 +25,19 @@ import com.smechotech.onboarding.data.tests
 import com.smechotech.onboarding.ui.Navigation.*
 import com.smechotech.onboarding.ui.features.BottomNavBar
 import com.smechotech.onboarding.ui.features.TopBar
-import com.smechotech.onboarding.ui.features.firstTimeLaunch
-import com.smechotech.onboarding.ui.features.isUserNotAuthorized
+import com.smechotech.onboarding.ui.features.isUserAuthorized
+import com.smechotech.onboarding.ui.features.showOnBoarding
 import com.smechotech.onboarding.ui.screens.*
 import com.smechotech.onboarding.ui.theme.OnboardingAppTheme
 
+const val USER_PREFERENCES_FILE = "USER_PREFERENCES_FILE"
+
 class MainActivity : ComponentActivity() {
     private val viewModel: UserViewModel by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        sharedPreferences = getPreferences(MODE_PRIVATE)
+        sharedPreferences = getSharedPreferences(USER_PREFERENCES_FILE, MODE_PRIVATE)
+
         setContent {
             val navController = rememberNavController()
 
@@ -52,8 +54,8 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.padding(paddingValues),
                         viewModel = viewModel,
                         navController = navController,
-                        topBarState,
-                        bottomBarState
+                        topBarState = topBarState,
+                        bottomBarState = bottomBarState
                     )
                 }
             }
@@ -82,11 +84,10 @@ fun App(
     OnBoardingAppNavHost(
         navController = navController,
         viewModel = viewModel,
-        topBarState,
-        bottomBarState
+        topBarState = topBarState,
+        bottomBarState = bottomBarState
     )
 }
-
 
 @Composable
 fun OnBoardingAppNavHost(
@@ -94,9 +95,7 @@ fun OnBoardingAppNavHost(
     viewModel: UserViewModel,
     topBarState: MutableState<Boolean>,
     bottomBarState: MutableState<Boolean>
-) = NavHost(
-    navController = navController, startDestination = TestScreen.name
-) {
+) = NavHost(navController = navController, startDestination = MainScreen.name) {
     composable(OnBoardingScreen.name) {
         topBarState.value = false
         bottomBarState.value = false
@@ -121,9 +120,9 @@ fun OnBoardingAppNavHost(
             tests = tests
         )
 
-        if (firstTimeLaunch()) {
+        if (showOnBoarding()) {
             navController.navigate(OnBoardingScreen.name)
-        } else if (isUserNotAuthorized()) {
+        } else if (!isUserAuthorized()) {
             navController.navigate(LoginScreen.name)
         }
     }
@@ -173,8 +172,10 @@ fun OnBoardingAppNavHost(
         topBarState.value = false
         bottomBarState.value = false
 
-        RewardingAfterTestScreen(navController = navController,
-            viewModel = viewModel)
+        RewardingAfterTestScreen(
+            navController = navController,
+            viewModel = viewModel
+        )
     }
 
     composable(ShopScreen.name) {

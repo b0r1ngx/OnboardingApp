@@ -10,20 +10,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices.PIXEL_4
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.smechotech.onboarding.R
 import com.smechotech.onboarding.data.Test
 import com.smechotech.onboarding.data.safetyPrecautionsTest
 import com.smechotech.onboarding.ui.*
+import com.smechotech.onboarding.ui.theme.screensHorizontalPadding
 
 @Composable
 fun TestScreen(navController: NavHostController, test: Test) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(all = 22.dp),
+            .padding(all = screensHorizontalPadding),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Title(titleText = test.title)
