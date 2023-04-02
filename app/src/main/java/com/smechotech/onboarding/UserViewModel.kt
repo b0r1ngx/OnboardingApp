@@ -41,7 +41,6 @@ class UserViewModel: ViewModel() {
         "ADMIN",
         "ADMIN",
         "ADMIN",
-        "ADMIN",
         "ADMIN"
     )
 

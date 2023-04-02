@@ -137,7 +137,7 @@ fun LeaderBoard(viewModel: UserViewModel) {
                         )
                 ) {
                     Text(text = (index + 1).toString(), modifier = Modifier.padding(start = 50.dp))
-                    Text(text = leader, modifier = Modifier.padding(start = 90.dp, end = 90.dp))
+                    Text(text = leader, modifier = Modifier.padding(start = 75.dp, end = 75.dp))
                     Text(
                         text = Random.nextInt(100, 2000).toString(),
                         modifier = Modifier.padding(end = 50.dp)
