@@ -2,7 +2,7 @@ package com.smechotech.onboarding
 
 import androidx.lifecycle.ViewModel
 import com.smechotech.onboarding.data.Test
-import com.smechotech.onboarding.data.testTest
+import com.smechotech.onboarding.data.exampleStartTest
 
 class UserViewModel: ViewModel() {
 
@@ -24,7 +24,7 @@ class UserViewModel: ViewModel() {
     /**
     * Current Test
      */
-    var test: Test = testTest
+    var test: Test = exampleStartTest
     var currentTestQuestionSize: Int = test.questions.size
     var currentQuestionIndex: Int = 0
     var currentCorrectAnswers: Int = 0

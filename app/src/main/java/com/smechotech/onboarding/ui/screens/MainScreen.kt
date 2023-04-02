@@ -15,17 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.geometry.toRect
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Outline
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Devices.PIXEL_4
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -33,7 +26,6 @@ import androidx.navigation.compose.rememberNavController
 import com.smechotech.onboarding.R
 import com.smechotech.onboarding.UserViewModel
 import com.smechotech.onboarding.data.Test
-import com.smechotech.onboarding.data.testTest
 
 @Composable
 fun MainScreen(
@@ -69,23 +61,6 @@ fun MainScreen(
     }
 }
 
-
-class OvalCornerShape(
-    size: Dp
-) : Shape {
-    override fun createOutline(
-        size: Size,
-        layoutDirection: LayoutDirection,
-        density: Density
-    ): Outline {
-        val rect = size.toRect()
-        val path = Path().apply {
-            addOval(rect)
-        }
-        return Outline.Generic(path)
-    }
-}
-
 @Composable
 fun Test(
     test: Test,
@@ -106,7 +81,7 @@ fun Test(
             )
         }
         .clickable {
-            viewModel.test = testTest
+            viewModel.test = test
             navController.navigate(com.smechotech.onboarding.ui.Navigation.TestScreen.name)
         },
     colors = CardDefaults.cardColors(

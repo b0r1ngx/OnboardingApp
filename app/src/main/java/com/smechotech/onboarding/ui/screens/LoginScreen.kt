@@ -4,21 +4,21 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.*
-import androidx.compose.material3.R
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.smechotech.onboarding.R
 import com.smechotech.onboarding.ui.ImageButton
-import com.smechotech.onboarding.ui.ImageDesign
 import com.smechotech.onboarding.ui.Navigation
 import com.smechotech.onboarding.userAuthorized
 
@@ -32,8 +32,8 @@ import com.smechotech.onboarding.userAuthorized
  */
 @Composable
 fun LoginScreen(navController: NavHostController) {
-    var login by remember { mutableStateOf(TextFieldValue("")) }
-    var password by remember { mutableStateOf(TextFieldValue("")) }
+    var login by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -44,21 +44,21 @@ fun LoginScreen(navController: NavHostController) {
     ) {
 
         ImageButton(
-            imageResource = R.id., // TODO: temp avatar's id
+            imageResource = R.drawable.avatar_great, // TODO: temp avatar's id
             onClick = { /* TODO: select avatar */ }
         )
 
         TextField(
             value = login,
-            onValueChange = { newText: TextFieldValue -> login = newText },
-            modifyer = Modifier.padding(vertical = 5.dp),
+            onValueChange = { newText -> login = newText },
+            modifier = Modifier.padding(vertical = 5.dp),
             textStyle = TextStyle(fontSize = 25.sp)
         )
 
         TextField(
             value = password,
             onValueChange = { newText -> password = newText },
-            modifyer = Modifier.padding(vertical = 5.dp),
+            modifier = Modifier.padding(vertical = 5.dp),
             textStyle = TextStyle(fontSize = 25.sp)
         )
         
