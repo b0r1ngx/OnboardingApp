@@ -52,11 +52,15 @@ fun ButtonToTest(
 }
 
 @Composable
-fun Image(imageResource: Int?) {
+fun Image(
+    imageResource: Int?,
+    modifier: Modifier = Modifier
+) {
     if (imageResource != null)
         Image(
             painter = painterResource(imageResource),
-            contentDescription = null
+            contentDescription = null,
+            modifier = modifier
         )
 }
 

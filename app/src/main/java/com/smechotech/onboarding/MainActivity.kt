@@ -60,7 +60,7 @@ fun OnBoardingAppNavHost(
     navController: NavHostController,
     viewModel: UserViewModel
 ) = NavHost(
-    navController = navController, startDestination = MainScreen.name
+    navController = navController, startDestination = TestScreen.name
 ) {
     composable(OnBoardingScreen.name) {
         OnBoardingScreen(navController = navController)
@@ -98,7 +98,8 @@ fun OnBoardingAppNavHost(
     }
 
     composable(RewardingAfterTestScreen.name) {
-        RewardingAfterTestScreen(navController = navController)
+        RewardingAfterTestScreen(navController = navController,
+            viewModel = viewModel)
     }
 
     composable(ShopScreen.name) {
