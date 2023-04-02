@@ -14,14 +14,14 @@ class UserViewModel: ViewModel() {
     /**
      * User Data
      */
-    var userLogin: String = ""
-    var userPassword: String = ""
+    var userLogin: String = "ADMIN"
+    var userPassword: String = "12345"
     var userExperience: Int = 0
     var userDiamonds: Int = 0
-    var userAvatarId: Int? = null
+    var userAvatarId: Int = R.drawable.avatar_great
 
     /**
-    * Current Test
+     * Current Test
      */
     var test: Test = exampleStartTest
     var currentTestQuestionSize: Int = test.questions.size
@@ -32,6 +32,17 @@ class UserViewModel: ViewModel() {
     fun getCurrentExp() = currentCorrectAnswers * ONE_LESSON_EXP
     fun getCurrentDiamonds() = currentCorrectAnswers * ONE_LESSON_DIAMOND
 
-    //var experienceForTest: Int = 0
+    var leadersName: List<String> = listOf(
+        "ADMIN",
+        "ADMIN",
+        "ADMIN",
+        "ADMIN",
+        "ADMIN",
+        "ADMIN",
+        "ADMIN",
+        "ADMIN",
+        "ADMIN",
+        "ADMIN"
+    )
 
 }

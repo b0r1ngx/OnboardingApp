@@ -1,5 +1,8 @@
 package com.smechotech.onboarding.ui.screens
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import android.os.Build.VERSION.SDK_INT
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -25,7 +28,7 @@ import coil.request.ImageRequest
 import coil.size.Size
 import com.smechotech.onboarding.R
 import com.smechotech.onboarding.UserViewModel
-import com.smechotech.onboarding.ui.ImageDesign
+import com.smechotech.onboarding.ui.IconText
 import com.smechotech.onboarding.ui.Navigation
 import com.smechotech.onboarding.ui.TextButtonDesign
 import com.smechotech.onboarding.ui.Title
@@ -47,9 +50,9 @@ fun RewardingAfterTestScreen(
             modifier = Modifier.padding(top = 40.dp).weight(.5f),
         )
 
-        Column(modifier = Modifier.padding(vertical = 50.dp).weight(1f)) {
-            ResultField(R.drawable.start_white, ": " + viewModel.getCurrentExp())
-            ResultField(R.drawable.gem, ": " + viewModel.getCurrentDiamonds())
+        Column(modifier = Modifier) {
+            IconText(iconId = R.drawable.start_white, text = ": " + viewModel.getCurrentExp())
+            IconText(iconId = R.drawable.gem, text =  ": " + viewModel.getCurrentDiamonds())
         }
 
         GifInsteadOfImage(modifier = Modifier.padding(vertical = 50.dp).weight(1.3f))

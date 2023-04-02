@@ -131,7 +131,7 @@ fun OnBoardingAppNavHost(
         topBarState.value = false
         bottomBarState.value = true
 
-        ProfileScreen(navController)
+        ProfileScreen(navController, viewModel)
     }
 
     composable(CalendarScreen.name) {
