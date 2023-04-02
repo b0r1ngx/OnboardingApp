@@ -20,7 +20,7 @@ import androidx.navigation.compose.rememberNavController
 import com.smechotech.onboarding.R
 import com.smechotech.onboarding.ui.ImageButton
 import com.smechotech.onboarding.ui.Navigation
-import com.smechotech.onboarding.userAuthorized
+import com.smechotech.onboarding.ui.features.userPassAuthorization
 
 /**
  * Login Screen
@@ -63,7 +63,7 @@ fun LoginScreen(navController: NavHostController) {
         )
         
         Button(onClick = {
-            userAuthorized()
+            userPassAuthorization()
             navController.navigate(Navigation.TestScreen.name)
         }) {
             Text(text = "Log in")
