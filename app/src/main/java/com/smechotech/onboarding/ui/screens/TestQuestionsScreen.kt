@@ -209,9 +209,9 @@ fun ButtonCheckTest(
         modifier = modifier
     ) {
         if (isFewAnswer && !isNext.value)
-            Text(text = stringResource(id = R.string.Check))
+            Text(text = stringResource(id = R.string.check_test))
         else
-            Text(text = stringResource(id = R.string.Next))
+            Text(text = stringResource(id = R.string.next))
     }
 }
 
