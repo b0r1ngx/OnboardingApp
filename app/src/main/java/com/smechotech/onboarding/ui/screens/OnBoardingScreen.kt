@@ -2,14 +2,16 @@ package com.smechotech.onboarding.ui.screens
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,54 +28,48 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.rememberPagerState
 import com.smechotech.onboarding.R
 import com.smechotech.onboarding.ui.Navigation
 import com.smechotech.onboarding.ui.features.userPassOnBoarding
 import com.smechotech.onboarding.ui.theme.screensHorizontalPadding
-import kotlinx.coroutines.launch
 
 typealias NavigateNextPage = () -> Unit
 
-@OptIn(ExperimentalPagerApi::class)
+val changedData = listOf(
+    listOf(R.string.welcome, R.string.welcome_content),
+    listOf(R.string.welcome_to_team, R.string.welcome_to_team_content),
+    listOf(R.string.study, R.string.study_content)
+)
+
 @Composable
 fun OnBoardingScreen(navController: NavHostController) {
-    val coroutineScope = rememberCoroutineScope()
-    val pagerState = rememberPagerState()
+    var page by remember {
+        mutableStateOf(0)
+    }
 
     val navigateNext: NavigateNextPage = {
-        if (pagerState.pageCount - 1 > pagerState.currentPage) coroutineScope.launch {
-            pagerState.scrollToPage(pagerState.currentPage + 1)
-        }
+        if (changedData.size - 1 > page) page++
         else {
             userPassOnBoarding()
             navController.navigate(Navigation.LoginScreen.name)
         }
-
     }
 
-    Box {
-        HorizontalPager(
-            modifier = Modifier.fillMaxSize(),
-            count = 3,
-            userScrollEnabled = false,
-            state = pagerState
-        ) { page ->
-            val padding = when (page) {
-                0 -> 2400.dp
-                1 -> 2250.dp
-                2 -> 2000.dp
-                else -> 1600.dp
-            }
-
-            when (page) {
-                0 -> Welcome(navigateNext, padding)
-                1 -> WelcomeToTeam(navigateNext, padding)
-                2 -> Study(navigateNext, padding)
-            }
+    val catPadding by animateDpAsState(
+        when (page) {
+            0 -> 2400.dp
+            1 -> 2250.dp
+            2 -> 2000.dp
+            else -> 1600.dp
         }
+    )
+
+    BaseOnBoardingScreen(navigateNext = navigateNext) {
+        IconContentScreen(
+            changedData[page][0],
+            changedData[page][1],
+            catPadding
+        )
     }
 }
 
@@ -81,7 +77,7 @@ fun OnBoardingScreen(navController: NavHostController) {
 private fun IconContentScreen(
     @StringRes title: Int,
     @StringRes body: Int,
-    padding: Dp,
+    imagePadding: Dp,
     @DrawableRes icon: Int = R.drawable.nyan_cat_white_full
 ) {
     Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
@@ -91,7 +87,13 @@ private fun IconContentScreen(
             modifier = Modifier
                 .padding(top = 40.dp)
                 .wrapContentSize(unbounded = true)
-                .padding(end = padding), // 2400 start, 1600 out,
+                .animateContentSize(
+                    animationSpec = tween(
+                        durationMillis = 800,
+                        easing = LinearOutSlowInEasing
+                    )
+                )
+                .padding(end = imagePadding),
             contentScale = ContentScale.FillWidth
         )
         Text(
@@ -122,13 +124,15 @@ private fun IconContentScreen(
 @Composable
 private fun BaseOnBoardingScreen(
     navigateNext: NavigateNextPage,
-    @DrawableRes icon: Int = R.drawable.ic_launcher_foreground,
+    @DrawableRes buttonIcon: Int = R.drawable.ic_launcher_foreground,
     @StringRes buttonText: Int = R.string.next,
     @StringRes descriptionText: Int = R.string.next_description,
     content: @Composable () -> Unit
 ) {
     Box(
-        modifier = Modifier.fillMaxSize().padding(horizontal = screensHorizontalPadding),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = screensHorizontalPadding),
         contentAlignment = Alignment.Center
     ) {
         Column(modifier = Modifier.matchParentSize()) {
@@ -170,48 +174,6 @@ private fun BaseOnBoardingScreen(
                 text = stringResource(id = descriptionText)
             )
         }
-    }
-}
-
-@Composable
-private fun Welcome(
-    navigateNext: NavigateNextPage,
-    padding: Dp
-) {
-    BaseOnBoardingScreen(navigateNext = navigateNext) {
-        IconContentScreen(
-            R.string.welcome,
-            R.string.welcome_content,
-            padding
-        )
-    }
-}
-
-@Composable
-private fun WelcomeToTeam(
-    navigateNext: NavigateNextPage,
-    padding: Dp
-) {
-    BaseOnBoardingScreen(navigateNext = navigateNext) {
-        IconContentScreen(
-            R.string.welcome_to_team,
-            R.string.welcome_to_team_content,
-            padding
-        )
-    }
-}
-
-@Composable
-private fun Study(
-    navigateNext: NavigateNextPage,
-    padding: Dp
-) {
-    BaseOnBoardingScreen(navigateNext = navigateNext) {
-        IconContentScreen(
-            R.string.study,
-            R.string.study_content,
-            padding
-        )
     }
 }
 
