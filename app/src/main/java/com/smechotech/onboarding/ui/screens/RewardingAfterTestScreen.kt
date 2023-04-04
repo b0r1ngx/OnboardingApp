@@ -8,6 +8,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -33,8 +36,17 @@ import com.smechotech.onboarding.ui.theme.screensHorizontalPadding
 
 @Composable
 fun RewardingAfterTestScreen(
-    navController: NavHostController, viewModel: UserViewModel
+    navController: NavHostController,
+    viewModel: UserViewModel
 ) {
+    val earnedExp by remember {
+        mutableStateOf(viewModel.getCurrentExpAndAppendItToUser())
+    }
+
+    val earnedDiamonds by remember {
+        mutableStateOf(viewModel.getCurrentDiamondsAndAppendItToUser())
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -44,18 +56,33 @@ fun RewardingAfterTestScreen(
 
         Title(
             titleText = stringResource(id = R.string.rewards_test_title),
-            modifier = Modifier.padding(top = 40.dp).weight(.5f),
+            modifier = Modifier
+                .padding(top = 40.dp)
+                .weight(.5f),
         )
 
         Column(modifier = Modifier) {
-            IconText(iconId = R.drawable.start_white, text = ": " + viewModel.getCurrentExp())
-            IconText(iconId = R.drawable.gem, text =  ": " + viewModel.getCurrentDiamonds())
+            IconText(
+                iconId = R.drawable.star_white,
+                text = ": $earnedExp"
+            )
+            IconText(
+                iconId = R.drawable.gem,
+                text = ": $earnedDiamonds"
+            )
         }
 
-        GifInsteadOfImage(modifier = Modifier.padding(vertical = 50.dp).weight(1.3f))
+        GifInsteadOfImage(
+            modifier = Modifier
+                .padding(vertical = 50.dp)
+                .weight(1.3f)
+        )
 
         TextButtonDesign(
-            onClick = { navController.navigate(Navigation.MainScreen.name) },
+            onClick = {
+                viewModel.saveRewardsToUserAndResetTestVariables()
+                navController.navigate(Navigation.MainScreen.name)
+            },
             modifier = Modifier.padding(
                 top = 200.dp,
                 bottom = screensHorizontalPadding
@@ -64,19 +91,15 @@ fun RewardingAfterTestScreen(
             Text(text = stringResource(id = R.string.next))
         }
     }
-
 }
 
 @Composable
-fun GifInsteadOfImage(modifier: Modifier = Modifier, ) {
+fun GifInsteadOfImage(modifier: Modifier = Modifier) {
     val context = LocalContext.current
     val imageLoader = ImageLoader.Builder(context)
         .components {
-            if (SDK_INT >= 28) {
-                add(ImageDecoderDecoder.Factory())
-            } else {
-                add(GifDecoder.Factory())
-            }
+            if (SDK_INT >= 28) add(ImageDecoderDecoder.Factory())
+            else add(GifDecoder.Factory())
         }
         .build()
     Image(
@@ -95,6 +118,5 @@ fun GifInsteadOfImage(modifier: Modifier = Modifier, ) {
     device = PIXEL_4
 )
 @Composable
-fun RewardReview() {
+fun RewardReview() =
     RewardingAfterTestScreen(rememberNavController(), UserViewModel())
-}

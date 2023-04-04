@@ -101,7 +101,7 @@ fun MainProfile(
                  * User experience count
                  */
                 IconText(
-                    iconId = R.drawable.start_white,
+                    iconId = R.drawable.star_white,
                     text = userExperience.toString(),
                     modifier = Modifier.padding(horizontal = 3.dp)
                 )

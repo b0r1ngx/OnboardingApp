@@ -10,5 +10,5 @@ fun ShopScreen(
     navController: NavHostController,
     viewModel: UserViewModel
 ) {
-    Text(text = "Screen")
+    Text(text = "ShopScreen")
 }

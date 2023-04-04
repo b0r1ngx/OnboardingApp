@@ -42,7 +42,7 @@ fun TopBar(
             )
             TextImage(
                 text = viewModel.userExperience.toString(),
-                imageResourceInt = R.drawable.start_white,
+                imageResourceInt = R.drawable.star_white,
                 textModifier = Modifier.padding(start = 60.dp, top = screensHorizontalPadding)
             )
             TextImage(

@@ -55,7 +55,7 @@ fun FastSwiper(lazyListState: LazyListState) {
                 start = screensHorizontalPadding,
                 top = 80.dp,
                 bottom = 80.dp
-                )
+            )
             .fillMaxHeight()
             .width(1.dp),
         thickness = 1.dp,
@@ -120,7 +120,9 @@ fun Test(
     Image(
         painter = painterResource(id = centerImage),
         contentDescription = "Тест",
-        modifier = Modifier.size(24.dp).align(Alignment.CenterHorizontally)
+        modifier = Modifier
+            .size(24.dp)
+            .align(Alignment.CenterHorizontally)
     )
 }
 

@@ -32,10 +32,9 @@ import com.smechotech.onboarding.R
 import com.smechotech.onboarding.ui.Navigation
 import com.smechotech.onboarding.ui.features.userPassOnBoarding
 import com.smechotech.onboarding.ui.theme.screensHorizontalPadding
+import okhttp3.internal.immutableListOf
 
-typealias NavigateNextPage = () -> Unit
-
-val changedData = listOf(
+val OnBoardingData = immutableListOf(
     listOf(R.string.welcome, R.string.welcome_content),
     listOf(R.string.welcome_to_team, R.string.welcome_to_team_content),
     listOf(R.string.study, R.string.study_content)
@@ -43,12 +42,9 @@ val changedData = listOf(
 
 @Composable
 fun OnBoardingScreen(navController: NavHostController) {
-    var page by remember {
-        mutableStateOf(0)
-    }
-
-    val navigateNext: NavigateNextPage = {
-        if (changedData.size - 1 > page) page++
+    var page by remember { mutableStateOf(0) }
+    val navigateNext = {
+        if (OnBoardingData.size - 1 > page) page++
         else {
             userPassOnBoarding()
             navController.navigate(Navigation.LoginScreen.name)
@@ -66,9 +62,9 @@ fun OnBoardingScreen(navController: NavHostController) {
 
     BaseOnBoardingScreen(navigateNext = navigateNext) {
         IconContentScreen(
-            changedData[page][0],
-            changedData[page][1],
-            catPadding
+            title = OnBoardingData[page][0],
+            body = OnBoardingData[page][1],
+            imagePadding = catPadding
         )
     }
 }
@@ -78,11 +74,11 @@ private fun IconContentScreen(
     @StringRes title: Int,
     @StringRes body: Int,
     imagePadding: Dp,
-    @DrawableRes icon: Int = R.drawable.nyan_cat_white_full
+    @DrawableRes image: Int = R.drawable.nyan_cat_white_full
 ) {
     Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
         Image(
-            painter = painterResource(id = icon),
+            painter = painterResource(id = image),
             contentDescription = "",
             modifier = Modifier
                 .padding(top = 40.dp)
@@ -123,7 +119,7 @@ private fun IconContentScreen(
 
 @Composable
 private fun BaseOnBoardingScreen(
-    navigateNext: NavigateNextPage,
+    navigateNext: () -> Any,
     @DrawableRes buttonIcon: Int = R.drawable.ic_launcher_foreground,
     @StringRes buttonText: Int = R.string.next,
     @StringRes descriptionText: Int = R.string.next_description,
@@ -140,8 +136,7 @@ private fun BaseOnBoardingScreen(
         }
 
         Column(
-            modifier = Modifier
-                .align(Alignment.BottomCenter),
+            modifier = Modifier.align(Alignment.BottomCenter),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Button(
@@ -167,9 +162,7 @@ private fun BaseOnBoardingScreen(
             Text(
                 modifier = Modifier
                     .padding(top = 10.dp, bottom = 30.dp),
-                style = TextStyle(
-                    textAlign = TextAlign.Center
-                ),
+                style = TextStyle(textAlign = TextAlign.Center),
                 color = Color.Gray,
                 text = stringResource(id = descriptionText)
             )
@@ -179,6 +172,5 @@ private fun BaseOnBoardingScreen(
 
 @Preview(device = PIXEL_4)
 @Composable
-fun OnBoardingScreenPreview() {
+fun OnBoardingScreenPreview() =
     OnBoardingScreen(navController = rememberNavController())
-}
