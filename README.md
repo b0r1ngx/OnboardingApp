@@ -6,7 +6,7 @@ The idea is to optimize the process of how new employees comes to company and st
 
 Two main restriction:
 1) Mobile app
-2) Somehow gamified
+2) Gamify process of onboarding process
 
 Implemented in Android on Kotlin w/ Compose.
 Screenshots: WIP
